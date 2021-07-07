@@ -2,6 +2,7 @@ package sg.edu.rp.c346.id20020036.demomyprofile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -21,12 +22,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        String name = prefs.getString("name", "Not Specified");
+        float gpa = prefs.getFloat("gpa", 0.0f);
+        etName.setText(name);
+        etGPA.setText(String.valueOf(gpa));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString("name", etName.getText().toString());
+        prefsEditor.putFloat("gpa", Float.parseFloat(etGPA.getText().toString()));
+        prefsEditor.commit();
     }
 }
